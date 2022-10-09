@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next pisces" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="大数据,Flink" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言在学习完零基础入门后，就能够学会如何创建流，读取数据，如何使用算子进行数据处理，如何将计算结果输出到MySQL，Redis等地方了。但是因为在数据传输过程中会出现很多各种各样的情况，比如说上报的数据时间是乱序的，这个就需要用到Window窗口了。 Window概念介绍Window本质上是流处理与批处理的桥梁，可以让你在无限流里创建有限流进行操作，比如说可以在源源不断的订单数据中计算5分钟内的销">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flink高级API极速入门">
+<meta property="og:url" content="http://whoiszxl.com/2021/06/10/2.bigdata/flink/Flink%E9%AB%98%E7%BA%A7API%E6%9E%81%E9%80%9F%E5%85%A5%E9%97%A8/index.html">
+<meta property="og:site_name" content="像花虽未红">
+<meta property="og:description" content="前言在学习完零基础入门后，就能够学会如何创建流，读取数据，如何使用算子进行数据处理，如何将计算结果输出到MySQL，Redis等地方了。但是因为在数据传输过程中会出现很多各种各样的情况，比如说上报的数据时间是乱序的，这个就需要用到Window窗口了。 Window概念介绍Window本质上是流处理与批处理的桥梁，可以让你在无限流里创建有限流进行操作，比如说可以在源源不断的订单数据中计算5分钟内的销">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-06-10T10:08:33.000Z">
+<meta property="article:modified_time" content="2022-10-09T06:45:30.353Z">
+<meta property="article:author" content="whoiszxl">
+<meta property="article:tag" content="大数据">
+<meta property="article:tag" content="Flink">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://whoiszxl.com/2021/06/10/2.bigdata/flink/Flink高级API极速入门/"/>
+
+
+
+
+
+  <title>Flink高级API极速入门 | 像花虽未红</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'G-DNDTJ5203E', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">像花虽未红</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Java</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://whoiszxl.com/2021/06/10/2.bigdata/flink/Flink%E9%AB%98%E7%BA%A7API%E6%9E%81%E9%80%9F%E5%85%A5%E9%97%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="像花虽未红">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Flink高级API极速入门</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-06-10T18:08:33+08:00">
+                2021-06-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/" itemprop="url" rel="index">
+                    <span itemprop="name">大数据</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/Flink/" itemprop="url" rel="index">
+                    <span itemprop="name">Flink</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3.3k
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在学习完零基础入门后，就能够学会如何创建流，读取数据，如何使用算子进行数据处理，如何将计算结果输出到MySQL，Redis等地方了。但是因为在数据传输过程中会出现很多各种各样的情况，比如说上报的数据时间是乱序的，这个就需要用到Window窗口了。</p>
+<h3 id="Window概念介绍"><a href="#Window概念介绍" class="headerlink" title="Window概念介绍"></a>Window概念介绍</h3><p>Window本质上是流处理与批处理的桥梁，可以让你在无限流里创建有限流进行操作，比如说可以在源源不断的订单数据中计算5分钟内的销售额，计算最近100个订单都是哪个地区的。</p>
+<p>所以此时通过这个例子，我们就能发现Window是分两种，一种是<code>CountWindow</code>，按照指定的数据条数来创建Window，就是上面所说的通过100个订单来统计地区，另一种是<code>TimeWindow</code>,按照指定的时间来生成窗口。</p>
+<span id="more"></span>
+
+<p><code>TimeWindow</code>其实也分了三种，一种滚动窗口(Tumbling Window)，一种滑动窗口(Sliding Window)，还有一种会话窗口(Session Window)。</p>
+<ol>
+<li>滚动窗口：窗口数据没有重叠，比如说每五分钟统计一次，那么一小时就有12个不重叠的窗口创建。</li>
+<li>滑动窗口：窗口数据是可能存在重叠的，比如说窗口是五分钟的范围，然后滑动参数是3分钟，当第一个窗口运行到三分钟的时候，第二个窗口就启动了，所以此时第一个窗口的后两分钟和第二个窗口的前两分钟是重叠的。</li>
+<li>会话窗口：类似于web的session，当一段时间没有收到新数据的时候就会生成新的窗口。</li>
+</ol>
+<h2 id="Window-API"><a href="#Window-API" class="headerlink" title="Window API"></a>Window API</h2><h3 id="滚动窗口"><a href="#滚动窗口" class="headerlink" title="滚动窗口"></a>滚动窗口</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//desc: 每10秒统计一次窗口里的最小值</span></span><br><span class="line"><span class="comment">//1. 对2元素的元组的第一个进行分组</span></span><br><span class="line"><span class="comment">//2. 然后创建一个10秒长的滚动窗口，一分钟6个窗口</span></span><br><span class="line"><span class="comment">//3. 对元组第二个元素进行取最小值操作</span></span><br><span class="line">ds.keyBy(data -&gt; data.f0)</span><br><span class="line">        .window(TumblingEventTimeWindows.of(Time.seconds(<span class="number">10</span>)))</span><br><span class="line">        .minBy(<span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="滑动窗口"><a href="#滑动窗口" class="headerlink" title="滑动窗口"></a>滑动窗口</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//desc: 每隔10秒开启一个窗口，统计之后60秒里的最小值</span></span><br><span class="line"><span class="comment">//1. 对2元素的元组的第一个进行分组</span></span><br><span class="line"><span class="comment">//2. 然后创建一个60秒长的滑动窗口，每10秒创建一次,如果窗口和滑动间隔都是同样的话，那就是一个滚动窗口了</span></span><br><span class="line"><span class="comment">//3. 对元组第二个元素进行取最小值操作</span></span><br><span class="line">ds.keyBy(data -&gt; data.f0)</span><br><span class="line">        .window(SlidingEventTimeWindows.of(Time.seconds(<span class="number">60</span>), Time.seconds(<span class="number">10</span>)))</span><br><span class="line">        .minBy(<span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="计数窗口"><a href="#计数窗口" class="headerlink" title="计数窗口"></a>计数窗口</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//desc 滚动方式每一百次求一次和</span></span><br><span class="line">ds.keyBy(data -&gt; data.f0)</span><br><span class="line">        .countWindow(<span class="number">100</span>)</span><br><span class="line">        .sum(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//desc 滑动方式每10次创建一个窗口，每个窗口容纳100次。</span></span><br><span class="line">ds.keyBy(data -&gt; data.f0)</span><br><span class="line">        .countWindow(<span class="number">100</span>, <span class="number">10</span>)</span><br><span class="line">        .sum(<span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="Window-Function"><a href="#Window-Function" class="headerlink" title="Window Function"></a>Window Function</h2><p>常用增量聚合函数有：ReduceFcuntion，AggregateFunction，每有数据来就进行计算，保持一个简单的状态。</p>
+<p>全窗口函数有：ProcessWindowFunction。先收集窗口中所有数据，等到计算的时候再统一遍历处理。</p>
+<h2 id="Flink的多种时间状态"><a href="#Flink的多种时间状态" class="headerlink" title="Flink的多种时间状态"></a>Flink的多种时间状态</h2><ol>
+<li>每条记录上传时，比如在APP发生了一次点击商详的事件，那么在点击的那一刻就会创建一个<code>Event Time</code>，就是这个事件时间。(对于统计与时间有强关系的流，事件时间则更加合适，大部分的流计算都用此时间。)</li>
+<li>当此次点击商详时间的日志上传到SpringBoot项目里，再发送到了Kafka，Flink消费到Kafka里的日志时，就会产生一个<code>Ingestion Time</code>，这个就是数据进入Flink的摄入时间。</li>
+<li>在算子执行的过程中，就会产生一个<code>Processing Time</code>，是机器的本地时间，无配置其他时间则默认此时间。</li>
+</ol>
+<h2 id="Watermark"><a href="#Watermark" class="headerlink" title="Watermark"></a>Watermark</h2><p>在我们点击商品详情的时候，消息日志从APP客户端到Web端，再到Kafka消息队列，再到Flink中，是需要有一定时间的。虽然基本上每次点击都是有顺序的，但是不能排除存在因为网络延迟，中间件宕机等缘故，而导致乱序，导致点击加购的事件会发生在进入商详之前。</p>
+<p>此时就需要一个watermark机制的引入来处理乱序事件，watermark是一个告诉Flink消息能够延迟多久的机制，比如说10秒的窗口，水位线为2秒，那么此时Flink就会等到12秒的时候才关闭窗口进行计算。</p>
+<h3 id="引入方式"><a href="#引入方式" class="headerlink" title="引入方式"></a>引入方式</h3><p>比如说接收了一个订单信息流，此时指定一个乱序时间戳提取器，指定提取的事件时间为创建时间，并且此时间必须是毫秒数。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ds.assignTimestampsAndWatermarks(<span class="keyword">new</span> BoundedOutOfOrdernessTimestampExtractor&lt;OrderEntity&gt;() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">extractTimestamp</span><span class="params">(OrderEntity element)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//指定数据源中的时间戳，毫秒级时间戳</span></span><br><span class="line">        <span class="keyword">return</span> element.getCreateTime();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="底层API-ProcessFunction"><a href="#底层API-ProcessFunction" class="headerlink" title="底层API ProcessFunction"></a>底层API ProcessFunction</h2><p>只有底层API才能够访问事件的时间戳和水位线和注册定时事件，还可以输出特定的事件如超时事件。Flink有如下8个Process Function：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">1. ProcessFunction</span><br><span class="line">2. KeyedProcessFunction</span><br><span class="line">3. CoProcessFunction</span><br><span class="line">4. ProcessJoinFunction</span><br><span class="line">5. BroadcastProcessFunction</span><br><span class="line">6. KeyedBroadcastProcessFunction</span><br><span class="line">7. ProcessWindowFunction</span><br><span class="line">8. ProcessAllWindowFunction</span><br></pre></td></tr></table></figure>
+
+<h3 id="KeyedProcessFunction简介"><a href="#KeyedProcessFunction简介" class="headerlink" title="KeyedProcessFunction简介"></a>KeyedProcessFunction简介</h3><p>此函数用来操作KeyedStream，KeyedProcessFunction会去处理流中的每个元素，输出为0,1,或多个元素，在具有基础的open(),close(),getRuntimeContext()等方法外，还有额外的两个方法：processElement, onTimer。</p>
+<p>代码实现：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//todo </span></span><br></pre></td></tr></table></figure>
+
+<h2 id="SideOutput"><a href="#SideOutput" class="headerlink" title="SideOutput"></a>SideOutput</h2><p>侧输出流可以产生多条数据类型不一样的流，与split切分类似，只是split切分的流类型是一样的。</p>
+<p>代码实现，实现按国家输出侧流</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1. 定义CN标签和USA标签</span></span><br><span class="line">OutputTag&lt;JSONObject&gt; cnTag = <span class="keyword">new</span> OutputTag&lt;JSONObject&gt;(<span class="string">&quot;cn&quot;</span>)&#123;&#125;;</span><br><span class="line">OutputTag&lt;JSONObject&gt; usaTag = <span class="keyword">new</span> OutputTag&lt;JSONObject&gt;(<span class="string">&quot;usa&quot;</span>)&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//2. 通过process方法对每个元素进行处理，通过country判断进行分流</span></span><br><span class="line">SingleOutputStreamOperator&lt;JSONObject&gt; otherCountry = jsonObjDS.process(<span class="keyword">new</span> ProcessFunction&lt;JSONObject, JSONObject() &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">processElement</span><span class="params">(JSONObject value, Context ctx, Collector&lt;JSONObject&gt; out)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (value.getString(<span class="string">&quot;country&quot;</span>).equals(<span class="string">&quot;cn&quot;</span>)) &#123;</span><br><span class="line">            ctx.output(cnTag, value);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (value.getString(<span class="string">&quot;country&quot;</span>).equals(<span class="string">&quot;usa&quot;</span>)) &#123;</span><br><span class="line">            ctx.output(usaTag, value);</span><br><span class="line">        &#125;</span><br><span class="line">        out.collect(value);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">//3. 从主流中通过标签获取到侧流</span></span><br><span class="line">DataStream&lt;JSONObject&gt; cnSideOutput = otherCountry.getSideOutput(cnTag);</span><br><span class="line">DataStream&lt;JSONObject&gt; usaSideOutput = otherCountry.getSideOutput(usaTag);</span><br><span class="line"></span><br><span class="line"><span class="comment">//4. 输出</span></span><br><span class="line">otherCountry.print(<span class="string">&quot;other::&quot;</span>);</span><br><span class="line">cnSideOutput.print(<span class="string">&quot;cn::&quot;</span>);</span><br><span class="line">usaSideOutput.print(<span class="string">&quot;usa::&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="CoProcessFunction"><a href="#CoProcessFunction" class="headerlink" title="CoProcessFunction"></a>CoProcessFunction</h2><p>两条输入流可以使用此方法来操作，使用processElement1()和processElement2()可以分别操作两条流，这两个方法都可以使用Context对象来调用，context可以访问事件数据，定时器时间戳，TimerService和SideOutputs。CoProcessFunction也提供了onTimer()。</p>
+<h2 id="状态编程和容错机制"><a href="#状态编程和容错机制" class="headerlink" title="状态编程和容错机制"></a>状态编程和容错机制</h2><p>流式计算分为有状态和无状态，无状态接收记录，并直接计算直接输出记录，有状态则会根据输入记录来维护中间状态，并通过输入记录与状态值来进行计算输出。</p>
+<h3 id="有状态算子"><a href="#有状态算子" class="headerlink" title="有状态算子"></a>有状态算子</h3><p>在Flink中有两种类型的算子，分别是：算子状态和键控状态。</p>
+<p>算子状态的作用范围限定为算子任务，同一并行任务处理的所有数据都可以访问到相同的状态，对同一个任务而言是共享的。算子状态有三种基本数据结构。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">1. 列表状态（List state）</span><br><span class="line">将状态表示为一组数据的列表。</span><br><span class="line"></span><br><span class="line">2. 联合列表状态（Union list state）</span><br><span class="line">状态表示为数据的列表。与常规列表状态的区别在于在发生故障时，或者从保存点（savepoint）启动应用程序时如何恢复。</span><br><span class="line"></span><br><span class="line">3. 广播状态（Broadcast state）</span><br><span class="line">如果一个算子有多项任务且每项任务状态都相同，此情况最适应用广播状态</span><br></pre></td></tr></table></figure>
+
+<p>键控状态是根据数据流中定义的键来维护和访问的，Flink为每个键值维护一个状态实例，并将键相同的数据都分区到同一个算子任务里，这个任务会维护和处理这个key的对应状态，当任务处理一条数据时，它会自动将状态的访问范围限定为当前数据的key。因此，<code>具有相同的key的所有数据都会访问相同的状态</code>。就相当于对数据分了组，并给每个组都一个状态。</p>
+<h2 id="Checkpoint-检查点"><a href="#Checkpoint-检查点" class="headerlink" title="Checkpoint 检查点"></a>Checkpoint 检查点</h2><p>保证exactly-once，就需要使用检查点在出现故障（网络故障，代码bug等）时将系统重置回到正确状态。检查点可以根据配置周期性地生成快照，将这些快照存储到内存，rocksdb或者HDFS上，一旦出现错误了，那么就会有选择的从快照中进行恢复。</p>
+<p>通过如下代码可以开启并配置：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1.创建基础的流执行上下文环境，并配置并行度为4</span></span><br><span class="line">StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();</span><br><span class="line">env.setParallelism(<span class="number">4</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//2.开启检查点功能，并配置检查点的创建周期为5秒，设置模式为EXACTLY_ONCE，这也是默认的模式。</span></span><br><span class="line">env.enableCheckpointing(<span class="number">5000</span>, CheckpointingMode.EXACTLY_ONCE);</span><br><span class="line"></span><br><span class="line"><span class="comment">//3.配置检查点的超时时间是20秒，检查点必须在20秒内完成，或者被丢弃。</span></span><br><span class="line">env.getCheckpointConfig().setCheckpointTimeout(<span class="number">20</span> * <span class="number">1000</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//4.配置最大的并发操作是1，同一时间只允许1个检查点执行。</span></span><br><span class="line">env.getCheckpointConfig().setMaxConcurrentCheckpoints(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//5.配置持久化端为HDFS</span></span><br><span class="line">env.setStateBackend(<span class="keyword">new</span> FsStateBackend(<span class="string">&quot;hdfs://hadoop001:9820/project_name/flink/checkpoint&quot;</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">//6. 其他配置</span></span><br><span class="line"><span class="comment">//......</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="StateBackend"><a href="#StateBackend" class="headerlink" title="StateBackend"></a>StateBackend</h3><ol>
+<li><p>MemoryStateBackend：默认状态下，State状态会保存在TaskManager的堆内存中，Checkpoint检查点会保存到JobManager的内存中，内存是不稳定的，一旦宕机则会丢失，所以在生产环境下是不建议使用的。</p>
+</li>
+<li><p>FsStateBackend：State数据保存在TaskManager内存中，执行Checkpoint时，会把State的快照数据保存到配置的文件系统中，可以用本地文件，或者HDFS。</p>
+</li>
+<li><p>RocksDBStateBackend：在本地文件中维护状态，State状态直接写入本地的RocksDB中，同时需要配置一个远端的文件系统地址，一般是使用HDFS，在进行Checkpoint的时候，会把本地的数据直接复制到远程的HDFS中，故障切换的时候直接从远端的文件系统直接恢复数据到本地。RocksDB使用本地磁盘存储，便无内存的大小限制，又能存储数据到远程文件系统中，但是RocksDB的序列化反序列化存储会有一点性能影响，推荐此方式在生产中使用。</p>
+</li>
+</ol>
+<p>修改存储方式的方法有两种，一种是代码修改，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//修改为hdfs的存储方式</span></span><br><span class="line">env.setStateBackend(<span class="keyword">new</span> FsStateBackend(<span class="string">&quot;hdfs://hadoop001:9820/project_name/flink/checkpoints&quot;</span>));</span><br></pre></td></tr></table></figure>
+
+<p>在使用RocksDBStateBackend的时候，是需要在pom中引入第三方依赖，然后再在代码中引用：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.flink<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>flink-statebackend-rocksdb_2.11<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.6.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">env.setStateBackend(<span class="keyword">new</span> RocksDBStateBackend(<span class="string">&quot;hdfs://hadoop001:9820/project_name/flink/checkpoints&quot;</span>, <span class="keyword">true</span>));</span><br></pre></td></tr></table></figure>
+
+<p>另一种是修改flink-conf.yml，修改的参数如下：</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 文件系统</span></span><br><span class="line"><span class="attr">state.backend:</span> <span class="string">filesystem</span></span><br><span class="line"><span class="attr">state.checkpoints.dir:</span> <span class="string">hdfs://namenode:9000/flink/checkpoints</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># rocksdb</span></span><br><span class="line"><span class="attr">state.backend:</span> <span class="string">rocksdb</span></span><br><span class="line"><span class="attr">state.backend.incremental:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">state.checkpoints.dir:</span> <span class="string">hdfs://namenode:9000/flink/checkpoints</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Restart-Strategy"><a href="#Restart-Strategy" class="headerlink" title="Restart Strategy"></a>Restart Strategy</h3><p>Flink支持的重启策略有三种，一种是固定间隔，一种是失败率，还有一种是无重启，没有启动Checkpoint，则使用无重启策略，如果启用了Checkpoint默认策略就是固定间隔策略，允许尝试重启的次数是Integer.MAX_VALUE次。</p>
+<ol>
+<li>重启策略</li>
+</ol>
+<p>通过flink-conf.yaml修改：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">restart-strategy:</span> <span class="string">fixed-delay</span></span><br><span class="line"><span class="attr">restart-strategy.fixed-delay.attempts:</span> <span class="number">3</span></span><br><span class="line"><span class="attr">restart-strategy.fixed-delay.delay:</span> <span class="number">10</span> <span class="string">s</span></span><br></pre></td></tr></table></figure>
+
+<p>代码中配置：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">env.setRestartStrategy(RestartStrategies.fixedDelayRestart(</span><br><span class="line">    Time.of(<span class="number">10</span>, TimeUnit.SECONDS)</span><br><span class="line">));</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>失败率<br>通过flink-conf.yaml修改：<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">restart-strategy:</span> <span class="string">failure-rate</span></span><br><span class="line"><span class="attr">restart-strategy.failure-rate.max-failures-per-interval:</span> <span class="number">3</span></span><br><span class="line"><span class="attr">restart-strategy.failure-rate.failure-rate-interval:</span> <span class="number">5</span> <span class="string">min</span></span><br><span class="line"><span class="attr">restart-strategy.failure-rate.delay:</span> <span class="number">10</span> <span class="string">s</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>代码中配置：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();</span><br><span class="line">env.setRestartStrategy(RestartStrategies.failureRateRestart(</span><br><span class="line">    <span class="number">3</span>, <span class="comment">// 最大的失败次数</span></span><br><span class="line">    Time.of(<span class="number">5</span>, TimeUnit.MINUTES), <span class="comment">//衡量失败次数的时间段</span></span><br><span class="line">    Time.of(<span class="number">10</span>, TimeUnit.SECONDS) <span class="comment">//间隔</span></span><br><span class="line">));</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>无重启<br>通过flink-conf.yaml修改：<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">restart-strategy:</span> <span class="string">none</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>代码配置：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();</span><br><span class="line">env.setRestartStrategy(RestartStrategies.noRestart());</span><br></pre></td></tr></table></figure>
+
+<h2 id="Savepoint-保存点"><a href="#Savepoint-保存点" class="headerlink" title="Savepoint 保存点"></a>Savepoint 保存点</h2><p>Savepoint是某个时间点程序状态的全局镜像，之后程序升级或者修改配置等情况下还能从保存的状态继续启动恢复。一般存在HDFS上，用户主动触发，是指向Checkpoint的指针，不会过期。</p>
+<p>一般建议程序通过uid()方法给算子赋ID，这个配置的ID将确定算子执行的状态范围，只要ID未变就能从保存点恢复程序。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">DataStreamSource&lt;String&gt; jsonStrStream = env.addSource(kafkaSource);</span><br><span class="line">jsonStrStream.uid(<span class="string">&quot;kafka-source-id&quot;</span>);</span><br><span class="line"></span><br><span class="line">DataStream&lt;JSONObject&gt; jsonObjDS = jsonStrStream.map(<span class="keyword">new</span> MapFunction&lt;String, JSONObject&gt;() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> JSONObject <span class="title">map</span><span class="params">(String s)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> JSON.parseObject(s);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;).uid(<span class="string">&quot;to-json-obj-id&quot;</span>);</span><br><span class="line">        </span><br></pre></td></tr></table></figure>
+
+<h3 id="如何开启Savepoint功能"><a href="#如何开启Savepoint功能" class="headerlink" title="如何开启Savepoint功能"></a>如何开启Savepoint功能</h3><p>修改flink-conf.yaml配置，这样在手动执行命令的时候可以不用指定保存路径</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">state.savepoints.dir:</span> <span class="string">hdfs://hadoop001:8120/project_name/flink/savepoints</span></span><br></pre></td></tr></table></figure>
+
+<p>如何触发一个savepoint</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 手动触发保存</span></span><br><span class="line">flink savepoint jobId [targetDir] [-yid yarnAppId]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 调用cancel的时候触发savepoint</span></span><br><span class="line">flink cancel -s [targetDir] jobId [-yid yarnAppId]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 从指定的savepoint启动job</span></span><br><span class="line">flink run -s savepointPath [runArgs]</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag"># 大数据</a>
+          
+            <a href="/tags/Flink/" rel="tag"># Flink</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/06/01/2.bigdata/build/CDH%E5%90%84%E5%A4%A7%E7%BB%84%E4%BB%B6%E5%AE%89%E8%A3%85/" rel="next" title="CDH各大组件安装">
+                <i class="fa fa-chevron-left"></i> CDH各大组件安装
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/06/10/2.bigdata/flink/Flink%E9%9B%B6%E5%9F%BA%E7%A1%80%E6%9E%81%E9%80%9F%E5%85%A5%E9%97%A8/" rel="prev" title="Flink零基础极速入门">
+                Flink零基础极速入门 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/whoiszxl" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:yourname@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Window%E6%A6%82%E5%BF%B5%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.1.</span> <span class="nav-text">Window概念介绍</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Window-API"><span class="nav-number">2.</span> <span class="nav-text">Window API</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BB%9A%E5%8A%A8%E7%AA%97%E5%8F%A3"><span class="nav-number">2.1.</span> <span class="nav-text">滚动窗口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3"><span class="nav-number">2.2.</span> <span class="nav-text">滑动窗口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E6%95%B0%E7%AA%97%E5%8F%A3"><span class="nav-number">2.3.</span> <span class="nav-text">计数窗口</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Window-Function"><span class="nav-number">3.</span> <span class="nav-text">Window Function</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Flink%E7%9A%84%E5%A4%9A%E7%A7%8D%E6%97%B6%E9%97%B4%E7%8A%B6%E6%80%81"><span class="nav-number">4.</span> <span class="nav-text">Flink的多种时间状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Watermark"><span class="nav-number">5.</span> <span class="nav-text">Watermark</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E5%85%A5%E6%96%B9%E5%BC%8F"><span class="nav-number">5.1.</span> <span class="nav-text">引入方式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%95%E5%B1%82API-ProcessFunction"><span class="nav-number">6.</span> <span class="nav-text">底层API ProcessFunction</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#KeyedProcessFunction%E7%AE%80%E4%BB%8B"><span class="nav-number">6.1.</span> <span class="nav-text">KeyedProcessFunction简介</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SideOutput"><span class="nav-number">7.</span> <span class="nav-text">SideOutput</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CoProcessFunction"><span class="nav-number">8.</span> <span class="nav-text">CoProcessFunction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8A%B6%E6%80%81%E7%BC%96%E7%A8%8B%E5%92%8C%E5%AE%B9%E9%94%99%E6%9C%BA%E5%88%B6"><span class="nav-number">9.</span> <span class="nav-text">状态编程和容错机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%89%E7%8A%B6%E6%80%81%E7%AE%97%E5%AD%90"><span class="nav-number">9.1.</span> <span class="nav-text">有状态算子</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Checkpoint-%E6%A3%80%E6%9F%A5%E7%82%B9"><span class="nav-number">10.</span> <span class="nav-text">Checkpoint 检查点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#StateBackend"><span class="nav-number">10.1.</span> <span class="nav-text">StateBackend</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Restart-Strategy"><span class="nav-number">10.2.</span> <span class="nav-text">Restart Strategy</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Savepoint-%E4%BF%9D%E5%AD%98%E7%82%B9"><span class="nav-number">11.</span> <span class="nav-text">Savepoint 保存点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%BC%80%E5%90%AFSavepoint%E5%8A%9F%E8%83%BD"><span class="nav-number">11.1.</span> <span class="nav-text">如何开启Savepoint功能</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a href="https://beian.miit.gov.cn/" target="_blank">粤ICP备17156258号</a></span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">27.6k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

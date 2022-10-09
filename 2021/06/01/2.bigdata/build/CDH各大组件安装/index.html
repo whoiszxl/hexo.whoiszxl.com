@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next pisces" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="大数据,环境搭建" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="上一步安装好了CM后，我们就可以进CM管理后台进行添加服务，安装组件的操作了 添加其他服务器1.进入到All Host界面下此时列表下只有hadoop001这台机器，点击Add Hosts来新增其他机器">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CDH各大组件安装">
+<meta property="og:url" content="http://whoiszxl.com/2021/06/01/2.bigdata/build/CDH%E5%90%84%E5%A4%A7%E7%BB%84%E4%BB%B6%E5%AE%89%E8%A3%85/index.html">
+<meta property="og:site_name" content="像花虽未红">
+<meta property="og:description" content="上一步安装好了CM后，我们就可以进CM管理后台进行添加服务，安装组件的操作了 添加其他服务器1.进入到All Host界面下此时列表下只有hadoop001这台机器，点击Add Hosts来新增其他机器">
+<meta property="og:locale">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/add_other_host_1.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/add_other_host_2.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/add_other_host_3.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/add_other_host_4.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/add_other_host_5.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/add_other_host_6.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/add_other_host_7.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/add_other_host_8.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/add_other_host_9.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/add_other_host_10.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/add_other_host_11.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/add_other_host_12.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/add_other_host_13.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/add_other_host_14.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/add_other_host_15.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/add_other_host_16.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/hdfs_1.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/hdfs_2.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/hdfs_3.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/hdfs_4.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/hdfs_5.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/hdfs_6.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/yarn-1.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/yarn-2.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/yarn-3.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/yarn-4.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/zk-1.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/zk-2.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/zk-3.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/zk-4.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/hive-1.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/hive-2.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/hive-3.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/hive-4.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/hive-5.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/hive-6.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/hive-7.png">
+<meta property="article:published_time" content="2021-06-01T10:08:33.000Z">
+<meta property="article:modified_time" content="2022-10-09T06:45:30.350Z">
+<meta property="article:author" content="whoiszxl">
+<meta property="article:tag" content="大数据">
+<meta property="article:tag" content="环境搭建">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/add_other_host_1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://whoiszxl.com/2021/06/01/2.bigdata/build/CDH各大组件安装/"/>
+
+
+
+
+
+  <title>CDH各大组件安装 | 像花虽未红</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'G-DNDTJ5203E', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">像花虽未红</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Java</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://whoiszxl.com/2021/06/01/2.bigdata/build/CDH%E5%90%84%E5%A4%A7%E7%BB%84%E4%BB%B6%E5%AE%89%E8%A3%85/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="像花虽未红">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">CDH各大组件安装</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-06-01T18:08:33+08:00">
+                2021-06-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/" itemprop="url" rel="index">
+                    <span itemprop="name">大数据</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" itemprop="url" rel="index">
+                    <span itemprop="name">环境搭建</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1.8k
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>上一步安装好了CM后，我们就可以进CM管理后台进行添加服务，安装组件的操作了</p>
+<h2 id="添加其他服务器"><a href="#添加其他服务器" class="headerlink" title="添加其他服务器"></a>添加其他服务器</h2><h3 id="1-进入到All-Host界面下"><a href="#1-进入到All-Host界面下" class="headerlink" title="1.进入到All Host界面下"></a>1.进入到All Host界面下</h3><p>此时列表下只有hadoop001这台机器，点击Add Hosts来新增其他机器</p>
+<span id="more"></span>
+<p><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/add_other_host_1.png"></p>
+<h3 id="2-选择添加hosts到我们选定的集群里"><a href="#2-选择添加hosts到我们选定的集群里" class="headerlink" title="2.选择添加hosts到我们选定的集群里"></a>2.选择添加hosts到我们选定的集群里</h3><p><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/add_other_host_2.png"></p>
+<h3 id="3-直接搜索出其他两台机器并选中添加"><a href="#3-直接搜索出其他两台机器并选中添加" class="headerlink" title="3.直接搜索出其他两台机器并选中添加"></a>3.直接搜索出其他两台机器并选中添加</h3><p><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/add_other_host_3.png"></p>
+<h3 id="4-选择自定义本地仓库"><a href="#4-选择自定义本地仓库" class="headerlink" title="4.选择自定义本地仓库"></a>4.选择自定义本地仓库</h3><p><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/add_other_host_4.png"></p>
+<h3 id="5-选择安装Oracle的JDK"><a href="#5-选择安装Oracle的JDK" class="headerlink" title="5.选择安装Oracle的JDK"></a>5.选择安装Oracle的JDK</h3><p><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/add_other_host_5.png"></p>
+<h3 id="6-配置root的密码"><a href="#6-配置root的密码" class="headerlink" title="6.配置root的密码"></a>6.配置root的密码</h3><p><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/add_other_host_6.png"></p>
+<h3 id="7-等待agents安装成功"><a href="#7-等待agents安装成功" class="headerlink" title="7.等待agents安装成功"></a>7.等待agents安装成功</h3><p><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/add_other_host_7.png"></p>
+<h3 id="8-等待包的下载，分发，解压与激活"><a href="#8-等待包的下载，分发，解压与激活" class="headerlink" title="8.等待包的下载，分发，解压与激活"></a>8.等待包的下载，分发，解压与激活</h3><p><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/add_other_host_8.png"></p>
+<h3 id="9-检查主机"><a href="#9-检查主机" class="headerlink" title="9.检查主机"></a>9.检查主机</h3><p><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/add_other_host_9.png"></p>
+<h3 id="10-选择host模板，默认就好了"><a href="#10-选择host模板，默认就好了" class="headerlink" title="10.选择host模板，默认就好了"></a>10.选择host模板，默认就好了</h3><p><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/add_other_host_10.png"></p>
+<h3 id="11-命令部署客户端配置有问题，直接忽略这个问题就好了"><a href="#11-命令部署客户端配置有问题，直接忽略这个问题就好了" class="headerlink" title="11.命令部署客户端配置有问题，直接忽略这个问题就好了"></a>11.命令部署客户端配置有问题，直接忽略这个问题就好了</h3><p><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/add_other_host_11.png"></p>
+<h2 id="Cloudera-Management-Service安装"><a href="#Cloudera-Management-Service安装" class="headerlink" title="Cloudera Management Service安装"></a>Cloudera Management Service安装</h2><h3 id="1-进入hadoop001-7180-cmf-home下，点击Add按钮下的Add-Cloudera-Management-Service"><a href="#1-进入hadoop001-7180-cmf-home下，点击Add按钮下的Add-Cloudera-Management-Service" class="headerlink" title="1.进入hadoop001:7180/cmf/home下，点击Add按钮下的Add Cloudera Management Service"></a>1.进入hadoop001:7180/cmf/home下，点击Add按钮下的Add Cloudera Management Service</h3><p><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/add_other_host_12.png"></p>
+<h3 id="2-选择监控服务安装在哪台机器上，可以按机器的实际情况去调配"><a href="#2-选择监控服务安装在哪台机器上，可以按机器的实际情况去调配" class="headerlink" title="2.选择监控服务安装在哪台机器上，可以按机器的实际情况去调配"></a>2.选择监控服务安装在哪台机器上，可以按机器的实际情况去调配</h3><p><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/add_other_host_13.png"></p>
+<h3 id="3-配置邮箱预警，配置监控器的本地存储目录"><a href="#3-配置邮箱预警，配置监控器的本地存储目录" class="headerlink" title="3.配置邮箱预警，配置监控器的本地存储目录"></a>3.配置邮箱预警，配置监控器的本地存储目录</h3><p>配置本地存储目录需要创建文件夹并赋予权限</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p /var/lib/cloudera-host-monitor</span><br><span class="line">mkdir /var/lib/cloudera-service-monitor</span><br><span class="line">chown -R cloudera-scm:cloudera-scm /var/lib/cloudera-host-monitor</span><br><span class="line">chown -R cloudera-scm:cloudera-scm /var/lib/cloudera-service-monitor/</span><br></pre></td></tr></table></figure>
+<p><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/add_other_host_14.png"></p>
+<h3 id="4-等待安装成功"><a href="#4-等待安装成功" class="headerlink" title="4.等待安装成功"></a>4.等待安装成功</h3><p><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/add_other_host_15.png"></p>
+<h3 id="5-安装成功后，我们在集群状态里就能看到图表的监控在运行了"><a href="#5-安装成功后，我们在集群状态里就能看到图表的监控在运行了" class="headerlink" title="5.安装成功后，我们在集群状态里就能看到图表的监控在运行了"></a>5.安装成功后，我们在集群状态里就能看到图表的监控在运行了</h3><p><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/add_other_host_16.png"></p>
+<h2 id="HDFS安装"><a href="#HDFS安装" class="headerlink" title="HDFS安装"></a>HDFS安装</h2><h3 id="1-进入集群中选择Actions-gt-Add-Service"><a href="#1-进入集群中选择Actions-gt-Add-Service" class="headerlink" title="1.进入集群中选择Actions -&gt; Add Service"></a>1.进入集群中选择Actions -&gt; Add Service</h3><p><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/hdfs_1.png"></p>
+<h3 id="2-在列表中选中HDFS"><a href="#2-在列表中选中HDFS" class="headerlink" title="2.在列表中选中HDFS"></a>2.在列表中选中HDFS</h3><p><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/hdfs_2.png"></p>
+<h3 id="3-按照机器配置去分配各个组件的安装节点"><a href="#3-按照机器配置去分配各个组件的安装节点" class="headerlink" title="3.按照机器配置去分配各个组件的安装节点"></a>3.按照机器配置去分配各个组件的安装节点</h3><p><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/hdfs_3.png"></p>
+<h3 id="4-配置HDFS的基础配置"><a href="#4-配置HDFS的基础配置" class="headerlink" title="4.配置HDFS的基础配置"></a>4.配置HDFS的基础配置</h3><p><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/hdfs_4.png"></p>
+<h3 id="5-等待安装成功"><a href="#5-等待安装成功" class="headerlink" title="5.等待安装成功"></a>5.等待安装成功</h3><p><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/hdfs_5.png"></p>
+<h3 id="6-安装成功后，在HDFS界面可以看到其相关信息了"><a href="#6-安装成功后，在HDFS界面可以看到其相关信息了" class="headerlink" title="6.安装成功后，在HDFS界面可以看到其相关信息了"></a>6.安装成功后，在HDFS界面可以看到其相关信息了</h3><p><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/hdfs_6.png"></p>
+<h3 id="7-关闭权限检查"><a href="#7-关闭权限检查" class="headerlink" title="7.关闭权限检查"></a>7.关闭权限检查</h3><p>HDFS默认能够执行写的用户是hdfs，所以当你在用其他用户角色在Linux上对HDFS有写操作的时候都会被拒绝执行，我们可以在HDFS配置里配置上对应的用户，或者直接关闭dfs的权限检查（dfs.permissions）。</p>
+<p>在HDFS界面选择Configuration选项的时候，有时会卡在Loading…界面，此时需要再点击一次右边的Role Groups，再返回配置界面就能加载出来了，不知道是什么情况。</p>
+<h3 id="8-安装后测试"><a href="#8-安装后测试" class="headerlink" title="8.安装后测试"></a>8.安装后测试</h3><p>在Shell下执行命令进行测试：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 递归显示目录结构，去除-R为非递归</span></span><br><span class="line">hadoop fs -ls /</span><br><span class="line"></span><br><span class="line"><span class="comment"># 递归创建目录,去除-p为非递归</span></span><br><span class="line">hadoop fs -mkdir -p /<span class="built_in">test</span>/hello</span><br><span class="line"></span><br><span class="line"><span class="comment"># 递归删除目录和文件</span></span><br><span class="line">hadoop fs -rm -R /<span class="built_in">test</span>/hello</span><br></pre></td></tr></table></figure>
+
+<h2 id="Yarn安装"><a href="#Yarn安装" class="headerlink" title="Yarn安装"></a>Yarn安装</h2><h3 id="1-选择Actions-gt-Add-Service-gt-YARN"><a href="#1-选择Actions-gt-Add-Service-gt-YARN" class="headerlink" title="1.选择Actions -&gt; Add Service -&gt; YARN"></a>1.选择Actions -&gt; Add Service -&gt; YARN</h3><p><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/yarn-1.png"></p>
+<h3 id="2-按照机器实际情况分配yarn的组件安装到哪台机器上"><a href="#2-按照机器实际情况分配yarn的组件安装到哪台机器上" class="headerlink" title="2.按照机器实际情况分配yarn的组件安装到哪台机器上"></a>2.按照机器实际情况分配yarn的组件安装到哪台机器上</h3><p><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/yarn-2.png"></p>
+<h3 id="3-等待安装成功，安装成功后便能在主页面看到yarn集群的信息"><a href="#3-等待安装成功，安装成功后便能在主页面看到yarn集群的信息" class="headerlink" title="3.等待安装成功，安装成功后便能在主页面看到yarn集群的信息"></a>3.等待安装成功，安装成功后便能在主页面看到yarn集群的信息</h3><p><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/yarn-3.png"><br><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/yarn-4.png"></p>
+<h3 id="4-安装成功后测试yarn是否能正常运行"><a href="#4-安装成功后测试yarn是否能正常运行" class="headerlink" title="4.安装成功后测试yarn是否能正常运行"></a>4.安装成功后测试yarn是否能正常运行</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># π计算</span></span><br><span class="line">yarn jar /opt/cloudera/parcels/CDH/jars/hadoop-mapreduce-examples-3.0.0-cdh6.2.1.jar pi 100 100</span><br><span class="line"></span><br><span class="line"><span class="comment"># wordcount计算</span></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">&quot;hello world\nhello zhou\nhello world\nhello hello&quot;</span> &gt;&gt; hello.txt</span><br><span class="line">hadoop fs -put hello.txt /input</span><br><span class="line">yarn jar /opt/cloudera/parcels/CDH/jars/hadoop-mapreduce-examples-3.0.0-cdh6.2.1.jar wordcount /input /output</span><br></pre></td></tr></table></figure>
+
+<h2 id="Zookeeper安装"><a href="#Zookeeper安装" class="headerlink" title="Zookeeper安装"></a>Zookeeper安装</h2><h3 id="1-选择Actions-gt-Add-Service-gt-ZooKepper，分配机器"><a href="#1-选择Actions-gt-Add-Service-gt-ZooKepper，分配机器" class="headerlink" title="1.选择Actions -&gt; Add Service -&gt; ZooKepper，分配机器"></a>1.选择Actions -&gt; Add Service -&gt; ZooKepper，分配机器</h3><p><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/zk-1.png"></p>
+<h3 id="2-配置dataDir快照目录与事务日志目录dataLogDir"><a href="#2-配置dataDir快照目录与事务日志目录dataLogDir" class="headerlink" title="2.配置dataDir快照目录与事务日志目录dataLogDir"></a>2.配置dataDir快照目录与事务日志目录dataLogDir</h3><p><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/zk-2.png"></p>
+<h3 id="3-等待ZooKeeper安装成功，安装成功后便能在主页面看到yarn集群的信息"><a href="#3-等待ZooKeeper安装成功，安装成功后便能在主页面看到yarn集群的信息" class="headerlink" title="3.等待ZooKeeper安装成功，安装成功后便能在主页面看到yarn集群的信息"></a>3.等待ZooKeeper安装成功，安装成功后便能在主页面看到yarn集群的信息</h3><p><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/zk-3.png"><br><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/zk-4.png"></p>
+<h3 id="4-测试是否安装成功"><a href="#4-测试是否安装成功" class="headerlink" title="4.测试是否安装成功"></a>4.测试是否安装成功</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 进入zk命令行</span></span><br><span class="line">zookeeper-client</span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行命令</span></span><br><span class="line">create /<span class="built_in">test</span> testvalue</span><br><span class="line">get /<span class="built_in">test</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Hive安装"><a href="#Hive安装" class="headerlink" title="Hive安装"></a>Hive安装</h2><h3 id="1-选择Actions-gt-Add-Service-gt-Hive，选择依赖，并分配机器"><a href="#1-选择Actions-gt-Add-Service-gt-Hive，选择依赖，并分配机器" class="headerlink" title="1.选择Actions -&gt; Add Service -&gt; Hive，选择依赖，并分配机器"></a>1.选择Actions -&gt; Add Service -&gt; Hive，选择依赖，并分配机器</h3><p><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/hive-1.png"><br><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/hive-2.png"></p>
+<h3 id="2-Hive元数据要配置MySQL数据库，在MySQL中配置对应的数据库信息"><a href="#2-Hive元数据要配置MySQL数据库，在MySQL中配置对应的数据库信息" class="headerlink" title="2.Hive元数据要配置MySQL数据库，在MySQL中配置对应的数据库信息"></a>2.Hive元数据要配置MySQL数据库，在MySQL中配置对应的数据库信息</h3><p>此处连接数据库，需要将MySQL驱动拷贝到Hive的lib目录下</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp /opt/software/mysql-connector-java-5.1.40.jar /opt/cloudera/parcels/CDH/lib/hive/lib</span><br></pre></td></tr></table></figure>
+<p><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/hive-3.png"></p>
+<h3 id="3-配置目录和端口，默认就好了"><a href="#3-配置目录和端口，默认就好了" class="headerlink" title="3.配置目录和端口，默认就好了"></a>3.配置目录和端口，默认就好了</h3><p><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/hive-4.png"></p>
+<h3 id="4-等待安装成功-1"><a href="#4-等待安装成功-1" class="headerlink" title="4.等待安装成功"></a>4.等待安装成功</h3><p><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/hive-5.png"></p>
+<p>如果没有拷贝MySQL驱动，就会报找不到驱动的错误<br><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/hive-6.png"></p>
+<h3 id="5-安装成功后就可以在主界面看到Hive的信息了"><a href="#5-安装成功后就可以在主界面看到Hive的信息了" class="headerlink" title="5.安装成功后就可以在主界面看到Hive的信息了"></a>5.安装成功后就可以在主界面看到Hive的信息了</h3><p><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/hive-7.png"></p>
+<h3 id="6-测试是否安装成功"><a href="#6-测试是否安装成功" class="headerlink" title="6.测试是否安装成功"></a>6.测试是否安装成功</h3><p>登录Hive命令行客户端</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hive</span><br></pre></td></tr></table></figure>
+
+<p>执行SQL测试</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> database testdb;</span><br><span class="line">use testdb;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> student(id <span class="type">int</span>, name string);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">table</span> student <span class="keyword">values</span>(<span class="number">1</span>, <span class="string">&#x27;xiaozhou&#x27;</span>);</span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> student;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Oozie安装"><a href="#Oozie安装" class="headerlink" title="Oozie安装"></a>Oozie安装</h2><ol>
+<li><p>进入<code>Add Service to Cluster 1</code>界面，选择<code>Oozie</code>，下一步</p>
+</li>
+<li><p><code>Select Dependencies</code>选择依赖，按需求选择</p>
+</li>
+<li><p>配置Oozie Server安装到哪台机器，按需求选择</p>
+</li>
+<li><p>在MySQL中创建Oozie元数据数据库: <code>create database oozie;</code>,然后在配置中填写。</p>
+</li>
+<li><p>需要拷贝MySQL驱动到oozie的lib目录下才能让oozie连接到MySQL上: </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cp /opt/software/mysql-connector-java-5.1.40.jar /opt/cloudera/parcels/CDH/lib/oozie/lib/</span><br><span class="line">cp /opt/software/mysql-connector-java-5.1.40.jar /var/lib/oozie/</span><br></pre></td></tr></table></figure></li>
+<li><p>配置好oozie对应的数据目录</p>
+</li>
+<li><p>等待安装成功，安装成功后就能在主页面看到oozie的相关信息了。</p>
+</li>
+</ol>
+<h2 id="Impala安装"><a href="#Impala安装" class="headerlink" title="Impala安装"></a>Impala安装</h2><ol>
+<li>进入<code>Add Service to Cluster 1</code>界面，选择<code>Impala</code>，下一步</li>
+<li>配置Impala组件安装到哪台机器，按需求选择</li>
+<li>配置对应的安装目录，等待安装成功就OK了</li>
+<li>测试时，输入命令<code>impala-shell</code>进入操作界面，操作和Hive一样就OK了。</li>
+</ol>
+<h2 id="Kakfa安装"><a href="#Kakfa安装" class="headerlink" title="Kakfa安装"></a>Kakfa安装</h2><ol>
+<li>进入<code>Add Service to Cluster 1</code>界面，选择<code>Kafka</code>，下一步</li>
+<li>配置三台机器都安装Kafka Broker，其他的选择安装</li>
+<li>选择kafka配置，配置<code>Java Heap Size of Broker</code>为1024MiB，推荐是最小512，其他默认</li>
+<li>点击完成，等待安装成功，安装成功后需要根据提示进行重启。</li>
+<li>下面是Kafka常用命令：<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1.查看当前服务器中的所有topic</span></span><br><span class="line">kafka-topics --zookeeper hadoop001:2181 --list</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2.创建topic</span></span><br><span class="line"><span class="comment"># --topic 定义topic名</span></span><br><span class="line"><span class="comment"># --replication-factor  定义副本数</span></span><br><span class="line"><span class="comment"># --partitions  定义分区数</span></span><br><span class="line">kafka-topics --zookeeper hadoop002:2181 \</span><br><span class="line">--create --replication-factor 3 --partitions 3 --topic first-topic</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3.删除topic (需要server.properties中设置delete.topic.enable=true否则只是标记删除。)</span></span><br><span class="line">kafka-topics --zookeeper hadoop001:2181 \</span><br><span class="line">--delete --topic first-topic</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4.发送消息</span></span><br><span class="line">kafka-console-producer --broker-list hadoop001:9092 --topic first-topic</span><br><span class="line">&gt; hello kafka</span><br><span class="line">&gt; hello world</span><br><span class="line"></span><br><span class="line"><span class="comment"># 5.消费消息(--from-beginning：会把主题中以往所有的数据都读取出来。)</span></span><br><span class="line">kafka-console-consumer --bootstrap-server hadoop001:9092 --from-beginning --topic first-topic</span><br><span class="line"></span><br><span class="line"><span class="comment"># 6.查看某个topic的详情</span></span><br><span class="line">kafka-topics --zookeeper hadoop001:2181 --describe --topic first-topic</span><br><span class="line"></span><br><span class="line"><span class="comment"># 7.修改分区数</span></span><br><span class="line">kafka-topics --zookeeper hadoop001:2181 --alter --topic first-topic --partitions 6</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="Sqoop安装"><a href="#Sqoop安装" class="headerlink" title="Sqoop安装"></a>Sqoop安装</h2><ol>
+<li>进入<code>Add Service to Cluster 1</code>界面，选择<code>Sqoop 1 Client</code>，下一步</li>
+<li>配置选择哪台机器安装就好了，因为Sqoop是客户端类程序，所以是不需长驻内存的。</li>
+<li>等待安装成功就OK了</li>
+<li>可以输入如下常用命令测试是否能正常使用<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 列出所有db</span></span><br><span class="line">sqoop list-databases --connect jdbc:mysql://hadoop001:3306/ --username root --password 123456</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="Spark安装"><a href="#Spark安装" class="headerlink" title="Spark安装"></a>Spark安装</h2><ol>
+<li>进入<code>Add Service to Cluster 1</code>界面，选择<code>Spark</code>，下一步</li>
+<li>一直下一步安装就好了</li>
+<li>在Shell中使用<code>spark-submit</code>命令提交一个求Pi的任务，在<code>http://host001:8088/cluster/</code>可以查看到提交的任务</li>
+</ol>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">spark-submit \</span><br><span class="line">--master yarn \</span><br><span class="line">--deploy-mode cluster \</span><br><span class="line">--class org.apache.spark.examples.SparkPi \</span><br><span class="line">--driver-memory 1024m \</span><br><span class="line">--driver-cores 2 \</span><br><span class="line">--executor-memory 1024m \</span><br><span class="line">--executor-cores 2 \</span><br><span class="line">--num-executors 2 \</span><br><span class="line">--queue default /opt/cloudera/parcels/CDH/jars/spark-examples_2.11-2.4.0-cdh6.2.1.jar 10</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>进入<code>http://host001:8088/cluster/</code>,点击完成的任务，再点击<code>Logs</code>，在最下方就能看到输出的结果：<code>Pi is roughly 3.1404391404391405</code></li>
+</ol>
+<h2 id="Hue安装"><a href="#Hue安装" class="headerlink" title="Hue安装"></a>Hue安装</h2><ol>
+<li>进入<code>Add Service to Cluster 1</code>界面，选择<code>Hue</code>，下一步</li>
+<li>配置选择哪台机器安装</li>
+<li>创建独立数据库只作为Hue的元数据库</li>
+<li>点击下一步就能等待安装成功了，访问：<code>http://hadoop001:8889/hue/accounts/login</code>就能正常使用了</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag"># 大数据</a>
+          
+            <a href="/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" rel="tag"># 环境搭建</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/06/01/2.bigdata/build/CDH%E5%9F%BA%E6%9C%AC%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" rel="next" title="CDH基本环境搭建">
+                <i class="fa fa-chevron-left"></i> CDH基本环境搭建
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/06/10/2.bigdata/flink/Flink%E9%AB%98%E7%BA%A7API%E6%9E%81%E9%80%9F%E5%85%A5%E9%97%A8/" rel="prev" title="Flink高级API极速入门">
+                Flink高级API极速入门 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/whoiszxl" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:yourname@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E5%85%B6%E4%BB%96%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">1.</span> <span class="nav-text">添加其他服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%BF%9B%E5%85%A5%E5%88%B0All-Host%E7%95%8C%E9%9D%A2%E4%B8%8B"><span class="nav-number">1.1.</span> <span class="nav-text">1.进入到All Host界面下</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E9%80%89%E6%8B%A9%E6%B7%BB%E5%8A%A0hosts%E5%88%B0%E6%88%91%E4%BB%AC%E9%80%89%E5%AE%9A%E7%9A%84%E9%9B%86%E7%BE%A4%E9%87%8C"><span class="nav-number">1.2.</span> <span class="nav-text">2.选择添加hosts到我们选定的集群里</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E7%9B%B4%E6%8E%A5%E6%90%9C%E7%B4%A2%E5%87%BA%E5%85%B6%E4%BB%96%E4%B8%A4%E5%8F%B0%E6%9C%BA%E5%99%A8%E5%B9%B6%E9%80%89%E4%B8%AD%E6%B7%BB%E5%8A%A0"><span class="nav-number">1.3.</span> <span class="nav-text">3.直接搜索出其他两台机器并选中添加</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E9%80%89%E6%8B%A9%E8%87%AA%E5%AE%9A%E4%B9%89%E6%9C%AC%E5%9C%B0%E4%BB%93%E5%BA%93"><span class="nav-number">1.4.</span> <span class="nav-text">4.选择自定义本地仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E9%80%89%E6%8B%A9%E5%AE%89%E8%A3%85Oracle%E7%9A%84JDK"><span class="nav-number">1.5.</span> <span class="nav-text">5.选择安装Oracle的JDK</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E9%85%8D%E7%BD%AEroot%E7%9A%84%E5%AF%86%E7%A0%81"><span class="nav-number">1.6.</span> <span class="nav-text">6.配置root的密码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E7%AD%89%E5%BE%85agents%E5%AE%89%E8%A3%85%E6%88%90%E5%8A%9F"><span class="nav-number">1.7.</span> <span class="nav-text">7.等待agents安装成功</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-%E7%AD%89%E5%BE%85%E5%8C%85%E7%9A%84%E4%B8%8B%E8%BD%BD%EF%BC%8C%E5%88%86%E5%8F%91%EF%BC%8C%E8%A7%A3%E5%8E%8B%E4%B8%8E%E6%BF%80%E6%B4%BB"><span class="nav-number">1.8.</span> <span class="nav-text">8.等待包的下载，分发，解压与激活</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-%E6%A3%80%E6%9F%A5%E4%B8%BB%E6%9C%BA"><span class="nav-number">1.9.</span> <span class="nav-text">9.检查主机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-%E9%80%89%E6%8B%A9host%E6%A8%A1%E6%9D%BF%EF%BC%8C%E9%BB%98%E8%AE%A4%E5%B0%B1%E5%A5%BD%E4%BA%86"><span class="nav-number">1.10.</span> <span class="nav-text">10.选择host模板，默认就好了</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-%E5%91%BD%E4%BB%A4%E9%83%A8%E7%BD%B2%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%85%8D%E7%BD%AE%E6%9C%89%E9%97%AE%E9%A2%98%EF%BC%8C%E7%9B%B4%E6%8E%A5%E5%BF%BD%E7%95%A5%E8%BF%99%E4%B8%AA%E9%97%AE%E9%A2%98%E5%B0%B1%E5%A5%BD%E4%BA%86"><span class="nav-number">1.11.</span> <span class="nav-text">11.命令部署客户端配置有问题，直接忽略这个问题就好了</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cloudera-Management-Service%E5%AE%89%E8%A3%85"><span class="nav-number">2.</span> <span class="nav-text">Cloudera Management Service安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%BF%9B%E5%85%A5hadoop001-7180-cmf-home%E4%B8%8B%EF%BC%8C%E7%82%B9%E5%87%BBAdd%E6%8C%89%E9%92%AE%E4%B8%8B%E7%9A%84Add-Cloudera-Management-Service"><span class="nav-number">2.1.</span> <span class="nav-text">1.进入hadoop001:7180&#x2F;cmf&#x2F;home下，点击Add按钮下的Add Cloudera Management Service</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E9%80%89%E6%8B%A9%E7%9B%91%E6%8E%A7%E6%9C%8D%E5%8A%A1%E5%AE%89%E8%A3%85%E5%9C%A8%E5%93%AA%E5%8F%B0%E6%9C%BA%E5%99%A8%E4%B8%8A%EF%BC%8C%E5%8F%AF%E4%BB%A5%E6%8C%89%E6%9C%BA%E5%99%A8%E7%9A%84%E5%AE%9E%E9%99%85%E6%83%85%E5%86%B5%E5%8E%BB%E8%B0%83%E9%85%8D"><span class="nav-number">2.2.</span> <span class="nav-text">2.选择监控服务安装在哪台机器上，可以按机器的实际情况去调配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%85%8D%E7%BD%AE%E9%82%AE%E7%AE%B1%E9%A2%84%E8%AD%A6%EF%BC%8C%E9%85%8D%E7%BD%AE%E7%9B%91%E6%8E%A7%E5%99%A8%E7%9A%84%E6%9C%AC%E5%9C%B0%E5%AD%98%E5%82%A8%E7%9B%AE%E5%BD%95"><span class="nav-number">2.3.</span> <span class="nav-text">3.配置邮箱预警，配置监控器的本地存储目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E7%AD%89%E5%BE%85%E5%AE%89%E8%A3%85%E6%88%90%E5%8A%9F"><span class="nav-number">2.4.</span> <span class="nav-text">4.等待安装成功</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E5%AE%89%E8%A3%85%E6%88%90%E5%8A%9F%E5%90%8E%EF%BC%8C%E6%88%91%E4%BB%AC%E5%9C%A8%E9%9B%86%E7%BE%A4%E7%8A%B6%E6%80%81%E9%87%8C%E5%B0%B1%E8%83%BD%E7%9C%8B%E5%88%B0%E5%9B%BE%E8%A1%A8%E7%9A%84%E7%9B%91%E6%8E%A7%E5%9C%A8%E8%BF%90%E8%A1%8C%E4%BA%86"><span class="nav-number">2.5.</span> <span class="nav-text">5.安装成功后，我们在集群状态里就能看到图表的监控在运行了</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HDFS%E5%AE%89%E8%A3%85"><span class="nav-number">3.</span> <span class="nav-text">HDFS安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%BF%9B%E5%85%A5%E9%9B%86%E7%BE%A4%E4%B8%AD%E9%80%89%E6%8B%A9Actions-gt-Add-Service"><span class="nav-number">3.1.</span> <span class="nav-text">1.进入集群中选择Actions -&gt; Add Service</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%9C%A8%E5%88%97%E8%A1%A8%E4%B8%AD%E9%80%89%E4%B8%ADHDFS"><span class="nav-number">3.2.</span> <span class="nav-text">2.在列表中选中HDFS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%8C%89%E7%85%A7%E6%9C%BA%E5%99%A8%E9%85%8D%E7%BD%AE%E5%8E%BB%E5%88%86%E9%85%8D%E5%90%84%E4%B8%AA%E7%BB%84%E4%BB%B6%E7%9A%84%E5%AE%89%E8%A3%85%E8%8A%82%E7%82%B9"><span class="nav-number">3.3.</span> <span class="nav-text">3.按照机器配置去分配各个组件的安装节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E9%85%8D%E7%BD%AEHDFS%E7%9A%84%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE"><span class="nav-number">3.4.</span> <span class="nav-text">4.配置HDFS的基础配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E7%AD%89%E5%BE%85%E5%AE%89%E8%A3%85%E6%88%90%E5%8A%9F"><span class="nav-number">3.5.</span> <span class="nav-text">5.等待安装成功</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E5%AE%89%E8%A3%85%E6%88%90%E5%8A%9F%E5%90%8E%EF%BC%8C%E5%9C%A8HDFS%E7%95%8C%E9%9D%A2%E5%8F%AF%E4%BB%A5%E7%9C%8B%E5%88%B0%E5%85%B6%E7%9B%B8%E5%85%B3%E4%BF%A1%E6%81%AF%E4%BA%86"><span class="nav-number">3.6.</span> <span class="nav-text">6.安装成功后，在HDFS界面可以看到其相关信息了</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E5%85%B3%E9%97%AD%E6%9D%83%E9%99%90%E6%A3%80%E6%9F%A5"><span class="nav-number">3.7.</span> <span class="nav-text">7.关闭权限检查</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-%E5%AE%89%E8%A3%85%E5%90%8E%E6%B5%8B%E8%AF%95"><span class="nav-number">3.8.</span> <span class="nav-text">8.安装后测试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Yarn%E5%AE%89%E8%A3%85"><span class="nav-number">4.</span> <span class="nav-text">Yarn安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%80%89%E6%8B%A9Actions-gt-Add-Service-gt-YARN"><span class="nav-number">4.1.</span> <span class="nav-text">1.选择Actions -&gt; Add Service -&gt; YARN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%8C%89%E7%85%A7%E6%9C%BA%E5%99%A8%E5%AE%9E%E9%99%85%E6%83%85%E5%86%B5%E5%88%86%E9%85%8Dyarn%E7%9A%84%E7%BB%84%E4%BB%B6%E5%AE%89%E8%A3%85%E5%88%B0%E5%93%AA%E5%8F%B0%E6%9C%BA%E5%99%A8%E4%B8%8A"><span class="nav-number">4.2.</span> <span class="nav-text">2.按照机器实际情况分配yarn的组件安装到哪台机器上</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E7%AD%89%E5%BE%85%E5%AE%89%E8%A3%85%E6%88%90%E5%8A%9F%EF%BC%8C%E5%AE%89%E8%A3%85%E6%88%90%E5%8A%9F%E5%90%8E%E4%BE%BF%E8%83%BD%E5%9C%A8%E4%B8%BB%E9%A1%B5%E9%9D%A2%E7%9C%8B%E5%88%B0yarn%E9%9B%86%E7%BE%A4%E7%9A%84%E4%BF%A1%E6%81%AF"><span class="nav-number">4.3.</span> <span class="nav-text">3.等待安装成功，安装成功后便能在主页面看到yarn集群的信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%AE%89%E8%A3%85%E6%88%90%E5%8A%9F%E5%90%8E%E6%B5%8B%E8%AF%95yarn%E6%98%AF%E5%90%A6%E8%83%BD%E6%AD%A3%E5%B8%B8%E8%BF%90%E8%A1%8C"><span class="nav-number">4.4.</span> <span class="nav-text">4.安装成功后测试yarn是否能正常运行</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Zookeeper%E5%AE%89%E8%A3%85"><span class="nav-number">5.</span> <span class="nav-text">Zookeeper安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%80%89%E6%8B%A9Actions-gt-Add-Service-gt-ZooKepper%EF%BC%8C%E5%88%86%E9%85%8D%E6%9C%BA%E5%99%A8"><span class="nav-number">5.1.</span> <span class="nav-text">1.选择Actions -&gt; Add Service -&gt; ZooKepper，分配机器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E9%85%8D%E7%BD%AEdataDir%E5%BF%AB%E7%85%A7%E7%9B%AE%E5%BD%95%E4%B8%8E%E4%BA%8B%E5%8A%A1%E6%97%A5%E5%BF%97%E7%9B%AE%E5%BD%95dataLogDir"><span class="nav-number">5.2.</span> <span class="nav-text">2.配置dataDir快照目录与事务日志目录dataLogDir</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E7%AD%89%E5%BE%85ZooKeeper%E5%AE%89%E8%A3%85%E6%88%90%E5%8A%9F%EF%BC%8C%E5%AE%89%E8%A3%85%E6%88%90%E5%8A%9F%E5%90%8E%E4%BE%BF%E8%83%BD%E5%9C%A8%E4%B8%BB%E9%A1%B5%E9%9D%A2%E7%9C%8B%E5%88%B0yarn%E9%9B%86%E7%BE%A4%E7%9A%84%E4%BF%A1%E6%81%AF"><span class="nav-number">5.3.</span> <span class="nav-text">3.等待ZooKeeper安装成功，安装成功后便能在主页面看到yarn集群的信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%B5%8B%E8%AF%95%E6%98%AF%E5%90%A6%E5%AE%89%E8%A3%85%E6%88%90%E5%8A%9F"><span class="nav-number">5.4.</span> <span class="nav-text">4.测试是否安装成功</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hive%E5%AE%89%E8%A3%85"><span class="nav-number">6.</span> <span class="nav-text">Hive安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%80%89%E6%8B%A9Actions-gt-Add-Service-gt-Hive%EF%BC%8C%E9%80%89%E6%8B%A9%E4%BE%9D%E8%B5%96%EF%BC%8C%E5%B9%B6%E5%88%86%E9%85%8D%E6%9C%BA%E5%99%A8"><span class="nav-number">6.1.</span> <span class="nav-text">1.选择Actions -&gt; Add Service -&gt; Hive，选择依赖，并分配机器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Hive%E5%85%83%E6%95%B0%E6%8D%AE%E8%A6%81%E9%85%8D%E7%BD%AEMySQL%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%8C%E5%9C%A8MySQL%E4%B8%AD%E9%85%8D%E7%BD%AE%E5%AF%B9%E5%BA%94%E7%9A%84%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BF%A1%E6%81%AF"><span class="nav-number">6.2.</span> <span class="nav-text">2.Hive元数据要配置MySQL数据库，在MySQL中配置对应的数据库信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%85%8D%E7%BD%AE%E7%9B%AE%E5%BD%95%E5%92%8C%E7%AB%AF%E5%8F%A3%EF%BC%8C%E9%BB%98%E8%AE%A4%E5%B0%B1%E5%A5%BD%E4%BA%86"><span class="nav-number">6.3.</span> <span class="nav-text">3.配置目录和端口，默认就好了</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E7%AD%89%E5%BE%85%E5%AE%89%E8%A3%85%E6%88%90%E5%8A%9F-1"><span class="nav-number">6.4.</span> <span class="nav-text">4.等待安装成功</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E5%AE%89%E8%A3%85%E6%88%90%E5%8A%9F%E5%90%8E%E5%B0%B1%E5%8F%AF%E4%BB%A5%E5%9C%A8%E4%B8%BB%E7%95%8C%E9%9D%A2%E7%9C%8B%E5%88%B0Hive%E7%9A%84%E4%BF%A1%E6%81%AF%E4%BA%86"><span class="nav-number">6.5.</span> <span class="nav-text">5.安装成功后就可以在主界面看到Hive的信息了</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E6%B5%8B%E8%AF%95%E6%98%AF%E5%90%A6%E5%AE%89%E8%A3%85%E6%88%90%E5%8A%9F"><span class="nav-number">6.6.</span> <span class="nav-text">6.测试是否安装成功</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Oozie%E5%AE%89%E8%A3%85"><span class="nav-number">7.</span> <span class="nav-text">Oozie安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Impala%E5%AE%89%E8%A3%85"><span class="nav-number">8.</span> <span class="nav-text">Impala安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Kakfa%E5%AE%89%E8%A3%85"><span class="nav-number">9.</span> <span class="nav-text">Kakfa安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sqoop%E5%AE%89%E8%A3%85"><span class="nav-number">10.</span> <span class="nav-text">Sqoop安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spark%E5%AE%89%E8%A3%85"><span class="nav-number">11.</span> <span class="nav-text">Spark安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hue%E5%AE%89%E8%A3%85"><span class="nav-number">12.</span> <span class="nav-text">Hue安装</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a href="https://beian.miit.gov.cn/" target="_blank">粤ICP备17156258号</a></span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">27.6k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

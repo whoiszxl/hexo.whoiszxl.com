@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next pisces" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="大数据,环境搭建" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="基础简介版本：Cloudera Manager：6.2.1 CDH：6.2.1CDH优点：可视化自动部署与配置，一键集成多种组件CDH简介：CDH是Cloudera维护的稳定Hadoop技术栈发行版，其灵活，安全，可扩展性高，高可用，兼容性好。CM简介：Cloudra Manager是一个web操作平台，可以借助CDH极简安装多种Hadoop框架。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CDH基本环境搭建">
+<meta property="og:url" content="http://whoiszxl.com/2021/06/01/2.bigdata/build/CDH%E5%9F%BA%E6%9C%AC%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/index.html">
+<meta property="og:site_name" content="像花虽未红">
+<meta property="og:description" content="基础简介版本：Cloudera Manager：6.2.1 CDH：6.2.1CDH优点：可视化自动部署与配置，一键集成多种组件CDH简介：CDH是Cloudera维护的稳定Hadoop技术栈发行版，其灵活，安全，可扩展性高，高可用，兼容性好。CM简介：Cloudra Manager是一个web操作平台，可以借助CDH极简安装多种Hadoop框架。">
+<meta property="og:locale">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/cdh_install_1.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/cdh_install_2.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/cdh_install_3.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/cdh_install_4.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/cdh_install_5.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/cdh_install_6.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/cdh_install_7.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/cdh_install_8.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/cdh_install_9.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/cdh_install_10.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/cdh_install_11.png">
+<meta property="og:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/cdh_install_12.png">
+<meta property="article:published_time" content="2021-06-01T10:08:33.000Z">
+<meta property="article:modified_time" content="2022-10-09T06:45:30.350Z">
+<meta property="article:author" content="whoiszxl">
+<meta property="article:tag" content="大数据">
+<meta property="article:tag" content="环境搭建">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/cdh_install_1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://whoiszxl.com/2021/06/01/2.bigdata/build/CDH基本环境搭建/"/>
+
+
+
+
+
+  <title>CDH基本环境搭建 | 像花虽未红</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'G-DNDTJ5203E', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">像花虽未红</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Java</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://whoiszxl.com/2021/06/01/2.bigdata/build/CDH%E5%9F%BA%E6%9C%AC%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="像花虽未红">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">CDH基本环境搭建</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-06-01T18:08:33+08:00">
+                2021-06-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/" itemprop="url" rel="index">
+                    <span itemprop="name">大数据</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" itemprop="url" rel="index">
+                    <span itemprop="name">环境搭建</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2.2k
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="基础简介"><a href="#基础简介" class="headerlink" title="基础简介"></a>基础简介</h2><p>版本：Cloudera Manager：6.2.1 CDH：6.2.1<br>CDH优点：可视化自动部署与配置，一键集成多种组件<br>CDH简介：CDH是Cloudera维护的稳定Hadoop技术栈发行版，其灵活，安全，可扩展性高，高可用，兼容性好。<br>CM简介：Cloudra Manager是一个web操作平台，可以借助CDH极简安装多种Hadoop框架。</p>
+<span id="more"></span>
+
+<h2 id="基础环境准备"><a href="#基础环境准备" class="headerlink" title="基础环境准备"></a>基础环境准备</h2><h3 id="1-配置三台机器hostname和映射关系"><a href="#1-配置三台机器hostname和映射关系" class="headerlink" title="1.配置三台机器hostname和映射关系"></a>1.配置三台机器hostname和映射关系</h3><p>修改hostname</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看当前hostname主机名</span></span><br><span class="line">hostname</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方法一：命令修改主机名（无需重启只要开启新会话窗口就可更新）</span></span><br><span class="line">hostnamectl set-hostname hadoop001</span><br><span class="line">hostnamectl set-hostname hadoop002</span><br><span class="line">hostnamectl set-hostname hadoop003</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方法二：编辑文件修改主机名（需要重启机器）</span></span><br><span class="line">vim /etc/hostname</span><br><span class="line"></span><br><span class="line"><span class="comment"># 分别在三台机器修改文件内容为如下</span></span><br><span class="line">hadoop001</span><br><span class="line">hadoop002</span><br><span class="line">hadoop003</span><br><span class="line"></span><br><span class="line"><span class="comment">#重启机器</span></span><br><span class="line">reboot </span><br></pre></td></tr></table></figure>
+
+<p>添加映射关系</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 编辑文件</span></span><br><span class="line">vim /etc/hosts</span><br><span class="line"></span><br><span class="line"><span class="comment"># 增加如下内容</span></span><br><span class="line">第一台机器IP hadoop001</span><br><span class="line">第二台机器IP hadoop002</span><br><span class="line">第三台机器IP hadoop003</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-配置SSH免密登录"><a href="#2-配置SSH免密登录" class="headerlink" title="2.配置SSH免密登录"></a>2.配置SSH免密登录</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 分别在三台机器上执行如下命令</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#生成公私钥命令，直接三个回车</span></span><br><span class="line">ssh-keygen -t rsa</span><br><span class="line"></span><br><span class="line"><span class="comment">#分别在三台机器上执行如下三个命令，共执行九次</span></span><br><span class="line">ssh-copy-id hadoop001</span><br><span class="line">ssh-copy-id hadoop002</span><br><span class="line">ssh-copy-id hadoop003</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-关闭一些配置"><a href="#3-关闭一些配置" class="headerlink" title="3.关闭一些配置"></a>3.关闭一些配置</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#关闭防火墙</span></span><br><span class="line">systemctl stop firewalld </span><br><span class="line">systemctl <span class="built_in">disable</span> firewalld</span><br><span class="line"></span><br><span class="line"><span class="comment">#关闭Selinux</span></span><br><span class="line">setenforce 0</span><br><span class="line"></span><br><span class="line"><span class="comment"># 编辑如下文件将SELINUX=enforcing改为SELINUX=disabled</span></span><br><span class="line">vim /etc/selinux/config</span><br><span class="line">SELINUX=disabled</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重启生效</span></span><br><span class="line">reboot</span><br></pre></td></tr></table></figure>
+<p>附：如果是云服务器，则还需要在安全组内添加白名单，如果机器安装了一些Linux管理面板，也有可能需要在Liunx面板中的安全组关闭一次。</p>
+<h2 id="Cloudra-Manager环境安装"><a href="#Cloudra-Manager环境安装" class="headerlink" title="Cloudra Manager环境安装"></a>Cloudra Manager环境安装</h2><h3 id="0-Linux机器安装基础依赖包"><a href="#0-Linux机器安装基础依赖包" class="headerlink" title="0.Linux机器安装基础依赖包"></a>0.Linux机器安装基础依赖包</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">yum install -y cyrus-sasl-plain cyrus-sasl-gssapi portmap fuse-libs bind-utils libxslt fuse</span><br><span class="line">yum install -y /lib/lsb/init-functions createrepo deltarpm python-deltarpm</span><br><span class="line">yum install -y mod_ssl openssl-devel python-psycopg2 MySQL-python</span><br><span class="line">yum install -y httpd</span><br><span class="line">yum install -y createrepo</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-下载CDH和CM相关安装包"><a href="#1-下载CDH和CM相关安装包" class="headerlink" title="1.下载CDH和CM相关安装包"></a>1.下载CDH和CM相关安装包</h3><p>下载地址：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"># 6.3.3版本后开始收费，现在下载都需要订阅了，所以测试时就无法从此链接下载了，需要找其他路径去下载</span><br><span class="line">https://archive.cloudera.com/cdh6/6.2.1/parcels/</span><br><span class="line">https://archive.cloudera.com/cm6/6.2.1/redhat7/yum/RPMS/x86_64/</span><br><span class="line"></span><br><span class="line"># 下载的文件如下</span><br><span class="line">cloudera-manager-agent-6.2.1-1426065.el7.x86_64.rpm</span><br><span class="line">cloudera-manager-daemons-6.2.1-1426065.el7.x86_64.rpm</span><br><span class="line">cloudera-manager-server-6.2.1-1426065.el7.x86_64.rpm</span><br><span class="line">cloudera-manager-server-db-2-6.2.1-1426065.el7.x86_64.rpm</span><br><span class="line">enterprise-debuginfo-6.2.1-1426065.el7.x86_64.rpm</span><br><span class="line">oracle-j2sdk1.8-1.8.0+update181-1.x86_64.rpm</span><br><span class="line"></span><br><span class="line">CDH-6.2.1-1.cdh6.2.1.p0.1425774-el7.parcel</span><br><span class="line">CDH-6.2.1-1.cdh6.2.1.p0.1425774-el7.parcel.sha1</span><br><span class="line">CDH-6.2.1-1.cdh6.2.1.p0.1425774-el7.parcel.sha256</span><br><span class="line"></span><br><span class="line">allkeys.asc</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-搭建本地yum源"><a href="#2-搭建本地yum源" class="headerlink" title="2.搭建本地yum源"></a>2.搭建本地yum源</h3><p>启动httpd服务并上传rpm文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 启动apache httpd服务</span></span><br><span class="line">systemctl start httpd.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 到httpd服务器目录下创建一个目录</span></span><br><span class="line">mkdir -p /var/www/html/cm6/6.2.1/redhat7/yum/RPMS/x86_64/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将如下文件全部上传到 x86_64目录下</span></span><br><span class="line">cloudera-manager-agent-6.2.1-1426065.el7.x86_64.rpm</span><br><span class="line">cloudera-manager-daemons-6.2.1-1426065.el7.x86_64.rpm</span><br><span class="line">cloudera-manager-server-6.2.1-1426065.el7.x86_64.rpm</span><br><span class="line">cloudera-manager-server-db-2-6.2.1-1426065.el7.x86_64.rpm</span><br><span class="line">enterprise-debuginfo-6.2.1-1426065.el7.x86_64.rpm</span><br><span class="line">oracle-j2sdk1.8-1.8.0+update181-1.x86_64.rpm</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将如下文件拷贝到/var/www/html/cm6/6.2.1/下</span></span><br><span class="line">allkeys.asc</span><br><span class="line"></span><br><span class="line"><span class="comment"># 访问测试是否能访问到文件</span></span><br><span class="line">http://hadoop001/cm6/6.2.1/redhat7/yum/RPMS/x86_64/</span><br></pre></td></tr></table></figure>
+
+<p>生成repodata目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /var/www/html/cm6/6.2.1/redhat7/yum</span><br><span class="line">createrepo .</span><br></pre></td></tr></table></figure>
+
+<p>配置yum源</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/yum.repos.d/cloudera-manager.repo</span><br><span class="line"></span><br><span class="line"><span class="comment"># 填写如下内容</span></span><br><span class="line">[cloudera-manager]</span><br><span class="line">name=Cloudera Manager</span><br><span class="line">baseurl=http://hadoop001/cm6/6.2.1/redhat7/yum/</span><br><span class="line">gpgcheck=0</span><br><span class="line">enabled=1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行命令清理刷新</span></span><br><span class="line">yum clean all</span><br><span class="line">yum list | grep cloudera</span><br></pre></td></tr></table></figure>
+
+<p>如果在yum源中添加了新包，需要删除之前的repodata文件后重新生成，并重启httpd服务，再执行<code>yum clean all</code>清除缓存。</p>
+<h3 id="3-创建用于管理集群的用户"><a href="#3-创建用于管理集群的用户" class="headerlink" title="3.创建用于管理集群的用户"></a>3.创建用于管理集群的用户</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 增加用户</span></span><br><span class="line">useradd cloudera-scm</span><br><span class="line"></span><br><span class="line"><span class="comment"># 给用户设置密码</span></span><br><span class="line">passwd cloudera-scm</span><br><span class="line"></span><br><span class="line"><span class="comment"># 给root权限并免密</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;cloudera-scm ALL=(root) NOPASSWD:ALL&quot;</span> &gt;&gt; /etc/sudoers</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-安装MySQL服务"><a href="#4-安装MySQL服务" class="headerlink" title="4.安装MySQL服务"></a>4.安装MySQL服务</h3><p>安装执行过程如下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 卸载自带</span></span><br><span class="line">rpm -qa | grep -i -E mysql\|mariadb | xargs -n1 sudo rpm -e --nodeps</span><br><span class="line"></span><br><span class="line"><span class="comment"># 下载如下MySQL相关文件</span></span><br><span class="line">01_mysql-community-common-5.7.16-1.el7.x86_64.rpm</span><br><span class="line">02_mysql-community-libs-5.7.16-1.el7.x86_64.rpm</span><br><span class="line">03_mysql-community-libs-compat-5.7.16-1.el7.x86_64.rpm</span><br><span class="line">04_mysql-community-client-5.7.16-1.el7.x86_64.rpm</span><br><span class="line">05_mysql-community-server-5.7.16-1.el7.x86_64.rpm</span><br><span class="line"></span><br><span class="line"><span class="comment"># 开始进行安装</span></span><br><span class="line">sudo rpm -ivh 01_mysql-community-common-5.7.16-1.el7.x86_64.rpm</span><br><span class="line">sudo rpm -ivh 02_mysql-community-libs-5.7.16-1.el7.x86_64.rpm</span><br><span class="line">sudo rpm -ivh 03_mysql-community-libs-compat-5.7.16-1.el7.x86_64.rpm</span><br><span class="line">sudo rpm -ivh 04_mysql-community-client-5.7.16-1.el7.x86_64.rpm</span><br><span class="line">sudo rpm -ivh 05_mysql-community-server-5.7.16-1.el7.x86_64.rpm</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果有包缺失就对应执行如下</span></span><br><span class="line">yum install net-tools</span><br><span class="line">yum install perl</span><br><span class="line">yum install libaio</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动命令</span></span><br><span class="line">sudo systemctl start mysqld</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看初始化的密码</span></span><br><span class="line">sudo cat /var/<span class="built_in">log</span>/mysqld.log | grep password</span><br></pre></td></tr></table></figure>
+
+<p>密码配置与账号配置</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 输入密码登录MySQL</span></span><br><span class="line">mysql <span class="operator">-</span>uroot <span class="operator">-</span>p</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 更改密码策略，测试环境用简单密码</span></span><br><span class="line"><span class="keyword">set</span> <span class="keyword">global</span> validate_password_length<span class="operator">=</span><span class="number">4</span>;</span><br><span class="line"><span class="keyword">set</span> <span class="keyword">global</span> validate_password_policy<span class="operator">=</span><span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 设置密码</span></span><br><span class="line"><span class="keyword">set</span> password<span class="operator">=</span>password(&quot;123456&quot;);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建scm数据库</span></span><br><span class="line"><span class="keyword">create</span> database scm <span class="keyword">DEFAULT</span> <span class="type">CHARACTER</span> <span class="keyword">SET</span> utf8;</span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">all</span> PRIVILEGES <span class="keyword">on</span> <span class="operator">*</span>.<span class="operator">*</span> <span class="keyword">TO</span> <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;%&#x27;</span> IDENTIFIED <span class="keyword">BY</span> <span class="string">&#x27;123456&#x27;</span> <span class="keyword">WITH</span> <span class="keyword">GRANT</span> OPTION;</span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">all</span> PRIVILEGES <span class="keyword">on</span> <span class="operator">*</span>.<span class="operator">*</span> <span class="keyword">TO</span> <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;localhost&#x27;</span> IDENTIFIED <span class="keyword">BY</span> <span class="string">&#x27;123456&#x27;</span> <span class="keyword">WITH</span> <span class="keyword">GRANT</span> OPTION;</span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">all</span> PRIVILEGES <span class="keyword">on</span> <span class="operator">*</span>.<span class="operator">*</span> <span class="keyword">TO</span> <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;hadoop001&#x27;</span> IDENTIFIED <span class="keyword">BY</span> <span class="string">&#x27;123456&#x27;</span> <span class="keyword">WITH</span> <span class="keyword">GRANT</span> OPTION;</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
+
+<h2 id="安装Cloudera-Server服务"><a href="#安装Cloudera-Server服务" class="headerlink" title="安装Cloudera Server服务"></a>安装Cloudera Server服务</h2><h3 id="1-通过搭建好的yum源安装服务"><a href="#1-通过搭建好的yum源安装服务" class="headerlink" title="1.通过搭建好的yum源安装服务"></a>1.通过搭建好的yum源安装服务</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">yum install -y oracle-j2sdk1.8-1.8.0+update181-1.x86_64</span><br><span class="line">yum install -y enterprise-debuginfo-6.2.1-1426065.el7.x86_64</span><br><span class="line">yum install -y cloudera-manager-server-6.2.1-1426065.el7.x86_64</span><br><span class="line">yum install -y cloudera-manager-server-db-2-6.2.1-1426065.el7.x86_64</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-配置元数据库，执行预备脚本"><a href="#2-配置元数据库，执行预备脚本" class="headerlink" title="2.配置元数据库，执行预备脚本"></a>2.配置元数据库，执行预备脚本</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 先将MySQL驱动拷贝到cm的lib目录下</span></span><br><span class="line">cp /opt/software/mysql-connector-java-5.1.40.jar /opt/cloudera/cm/lib</span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行scm_prepare_database.sh脚本</span></span><br><span class="line">/opt/cloudera/cm/schema/scm_prepare_database.sh -h localhost mysql scm root 123456</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-启动cm-server进程"><a href="#3-启动cm-server进程" class="headerlink" title="3.启动cm server进程"></a>3.启动cm server进程</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 启动命令</span></span><br><span class="line">systemctl start cloudera-scm-server</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看启动状态</span></span><br><span class="line">systemctl status cloudera-scm-server</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看日志</span></span><br><span class="line">tail -f /var/<span class="built_in">log</span>/cloudera-scm-server/cloudera-scm-server.log</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看端口</span></span><br><span class="line">netstat -anp | grep 7180</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-配置本地parcel包"><a href="#4-配置本地parcel包" class="headerlink" title="4.配置本地parcel包"></a>4.配置本地parcel包</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在数据库初始化后，将parcel文件放到/opt/cloudera/parcel-repo中</span></span><br><span class="line">cp /opt/software/CDH-6.2.1-1.cdh6.2.1.p0.1425774-el7.parcel /opt/cloudera/parcel-repo</span><br><span class="line">cp /opt/software/CDH-6.2.1-1.cdh6.2.1.p0.1425774-el7.parcel.sha1 /opt/cloudera/parcel-repo</span><br><span class="line">cp /opt/software/CDH-6.2.1-1.cdh6.2.1.p0.1425774-el7.parcel.sha256 /opt/cloudera/parcel-repo</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重命名密钥文件</span></span><br><span class="line">mv CDH-6.2.1-1.cdh6.2.1.p0.1425774-el7.parcel.sha1 CDH-6.2.1-1.cdh6.2.1.p0.1425774-el7.parcel.sha</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-配置swappiness和透明化"><a href="#5-配置swappiness和透明化" class="headerlink" title="5.配置swappiness和透明化"></a>5.配置swappiness和透明化</h3><p>透明化配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看透明页面是否开启</span></span><br><span class="line">cat /sys/kernel/mm/transparent_hugepage/defrag</span><br><span class="line"></span><br><span class="line"><span class="comment"># 结果</span></span><br><span class="line">[always] madvise never <span class="comment">#表示已经启用</span></span><br><span class="line">always madvise [never] <span class="comment">#表示已经关闭</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行命令进行关闭(临时生效)</span></span><br><span class="line"><span class="built_in">echo</span> never &gt; /sys/kernel/mm/transparent_hugepage/defrag</span><br><span class="line"><span class="built_in">echo</span> never &gt; /sys/kernel/mm/transparent_hugepage/enabled</span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行命令进行关闭(永久生效)</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;echo never &gt; /sys/kernel/mm/transparent_hugepage/defrag&quot;</span> &gt;&gt; /etc/rc.local</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;echo never &gt; /sys/kernel/mm/transparent_hugepage/enabled&quot;</span> &gt;&gt; /etc/rc.local</span><br></pre></td></tr></table></figure>
+
+<p>swappiness配置，内核参数为vm.swappiness，值范围是0-100，表示系统何时开始交换物理内存与虚拟内存。举例：系统内存为100G，vm.swappiness为10，则表示系统内存在使用到 <code>100G * [ (100 - 10) / 100 ] = 90G</code> 的时候才进行物理内存和虚拟内存的交换，这个会影响性能，所以建议区间是1-10。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 临时生效</span></span><br><span class="line">sysctl -w vm.swappiness=10</span><br><span class="line"></span><br><span class="line"><span class="comment"># 永久生效</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;vm.swappiness=10&quot;</span> &gt;&gt; /etc/sysctl.conf</span><br></pre></td></tr></table></figure>
+
+<h2 id="访问WEB-UI界面进行安装操作"><a href="#访问WEB-UI界面进行安装操作" class="headerlink" title="访问WEB-UI界面进行安装操作"></a>访问WEB-UI界面进行安装操作</h2><h3 id="1-进入界面"><a href="#1-进入界面" class="headerlink" title="1. 进入界面"></a>1. 进入界面</h3><p>访问地址：<a target="_blank" rel="noopener" href="http://hadoop001:7180/cmf/login">http://hadoop001:7180/cmf/login</a><br>账号密码: admin</p>
+<p>登录后进入欢迎界面，点击Continue下一步<br><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/cdh_install_1.png"></p>
+<h3 id="2-点击yes同意，再点击Continue下一步"><a href="#2-点击yes同意，再点击Continue下一步" class="headerlink" title="2. 点击yes同意，再点击Continue下一步"></a>2. 点击yes同意，再点击Continue下一步</h3><p><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/cdh_install_2.png"></p>
+<h3 id="3-测试环境选择Cloudera-Express-Free免费版本，然后再点击Continue下一步"><a href="#3-测试环境选择Cloudera-Express-Free免费版本，然后再点击Continue下一步" class="headerlink" title="3. 测试环境选择Cloudera Express Free免费版本，然后再点击Continue下一步"></a>3. 测试环境选择Cloudera Express Free免费版本，然后再点击Continue下一步</h3><p><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/cdh_install_3.png"></p>
+<h3 id="4-给我们的集群取一个名字"><a href="#4-给我们的集群取一个名字" class="headerlink" title="4. 给我们的集群取一个名字"></a>4. 给我们的集群取一个名字</h3><p><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/cdh_install_4.png"></p>
+<h3 id="5-在Hostname中填入主机名搜索，然后勾选搜索到的结果再点击Continue下一步"><a href="#5-在Hostname中填入主机名搜索，然后勾选搜索到的结果再点击Continue下一步" class="headerlink" title="5. 在Hostname中填入主机名搜索，然后勾选搜索到的结果再点击Continue下一步"></a>5. 在Hostname中填入主机名搜索，然后勾选搜索到的结果再点击Continue下一步</h3><p><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/cdh_install_5.png"></p>
+<h3 id="6-配置本地仓库"><a href="#6-配置本地仓库" class="headerlink" title="6. 配置本地仓库"></a>6. 配置本地仓库</h3><p>此处Custom Repository选默认，为: <a target="_blank" rel="noopener" href="http://hadoop001/cm6/6.2.1%EF%BC%8CCDH">http://hadoop001/cm6/6.2.1，CDH</a> Version此时是没有扫描到的，所以需要访问此链接(<a target="_blank" rel="noopener" href="http://gf-hadoop001:7180/cmf/parcel/status)%E9%85%8D%E7%BD%AE%E4%B8%80%E4%B8%8B%60Parcel">http://gf-hadoop001:7180/cmf/parcel/status)配置一下`Parcel</a> Update Frequency 包更新周期`，可以配置为1分钟一次，安装的时候才能展示出来。安装成功后可以设置回一小时，其他选项都默认，再次点击Continue下一步<br><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/cdh_install_6.png"></p>
+<h3 id="7-此处勾选安装Oracle的JDK"><a href="#7-此处勾选安装Oracle的JDK" class="headerlink" title="7. 此处勾选安装Oracle的JDK"></a>7. 此处勾选安装Oracle的JDK</h3><p><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/cdh_install_7.png"></p>
+<h3 id="8-配置root的密码"><a href="#8-配置root的密码" class="headerlink" title="8. 配置root的密码"></a>8. 配置root的密码</h3><p><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/cdh_install_8.png"></p>
+<h3 id="9-开始等待agents的安装"><a href="#9-开始等待agents的安装" class="headerlink" title="9. 开始等待agents的安装"></a>9. 开始等待agents的安装</h3><p><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/cdh_install_9.png"></p>
+<h3 id="10-检查集群环境"><a href="#10-检查集群环境" class="headerlink" title="10. 检查集群环境"></a>10. 检查集群环境</h3><p>安装成功后检查集群的环境，先检查网络情况，但是因为此时安装的是单机环境，网络检查状态是有问题的，但是没关系先跳过。然后再是检查host环境，检查通过后选择<code>I understand the risks...</code> 再点击下一步。<br><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/cdh_install_10.png"></p>
+<p>这是上一步host检查的结果，如果我们没有配置swappiness和透明化，那么红框中的选项就会有异常。<br><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/cdh_install_11.png"></p>
+<h3 id="11-一键安装常用组件"><a href="#11-一键安装常用组件" class="headerlink" title="11. 一键安装常用组件"></a>11. 一键安装常用组件</h3><p>这一步可以一键安装一些常用组件，不安装则直接点返回，此时软件环境就已经安装成功了。<br><img src="https://whoiszxl-hexo.oss-cn-beijing.aliyuncs.com/bigdata/cdh_install_12.png"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag"># 大数据</a>
+          
+            <a href="/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" rel="tag"># 环境搭建</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/06/01/2.bigdata/build/%E4%BD%BF%E7%94%A8%E6%8A%A2%E5%8D%A0%E5%BC%8F%E9%98%BF%E9%87%8C%E4%BA%91ECS%E6%9E%84%E5%BB%BA%E7%9F%AD%E6%9C%9F%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83/" rel="next" title="使用抢占式阿里云ECS构建短期测试环境">
+                <i class="fa fa-chevron-left"></i> 使用抢占式阿里云ECS构建短期测试环境
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/06/01/2.bigdata/build/CDH%E5%90%84%E5%A4%A7%E7%BB%84%E4%BB%B6%E5%AE%89%E8%A3%85/" rel="prev" title="CDH各大组件安装">
+                CDH各大组件安装 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/whoiszxl" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:yourname@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">基础简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="nav-number">2.</span> <span class="nav-text">基础环境准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%85%8D%E7%BD%AE%E4%B8%89%E5%8F%B0%E6%9C%BA%E5%99%A8hostname%E5%92%8C%E6%98%A0%E5%B0%84%E5%85%B3%E7%B3%BB"><span class="nav-number">2.1.</span> <span class="nav-text">1.配置三台机器hostname和映射关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E9%85%8D%E7%BD%AESSH%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95"><span class="nav-number">2.2.</span> <span class="nav-text">2.配置SSH免密登录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%85%B3%E9%97%AD%E4%B8%80%E4%BA%9B%E9%85%8D%E7%BD%AE"><span class="nav-number">2.3.</span> <span class="nav-text">3.关闭一些配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cloudra-Manager%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85"><span class="nav-number">3.</span> <span class="nav-text">Cloudra Manager环境安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#0-Linux%E6%9C%BA%E5%99%A8%E5%AE%89%E8%A3%85%E5%9F%BA%E7%A1%80%E4%BE%9D%E8%B5%96%E5%8C%85"><span class="nav-number">3.1.</span> <span class="nav-text">0.Linux机器安装基础依赖包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E4%B8%8B%E8%BD%BDCDH%E5%92%8CCM%E7%9B%B8%E5%85%B3%E5%AE%89%E8%A3%85%E5%8C%85"><span class="nav-number">3.2.</span> <span class="nav-text">1.下载CDH和CM相关安装包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%90%AD%E5%BB%BA%E6%9C%AC%E5%9C%B0yum%E6%BA%90"><span class="nav-number">3.3.</span> <span class="nav-text">2.搭建本地yum源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%88%9B%E5%BB%BA%E7%94%A8%E4%BA%8E%E7%AE%A1%E7%90%86%E9%9B%86%E7%BE%A4%E7%9A%84%E7%94%A8%E6%88%B7"><span class="nav-number">3.4.</span> <span class="nav-text">3.创建用于管理集群的用户</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%AE%89%E8%A3%85MySQL%E6%9C%8D%E5%8A%A1"><span class="nav-number">3.5.</span> <span class="nav-text">4.安装MySQL服务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Cloudera-Server%E6%9C%8D%E5%8A%A1"><span class="nav-number">4.</span> <span class="nav-text">安装Cloudera Server服务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%80%9A%E8%BF%87%E6%90%AD%E5%BB%BA%E5%A5%BD%E7%9A%84yum%E6%BA%90%E5%AE%89%E8%A3%85%E6%9C%8D%E5%8A%A1"><span class="nav-number">4.1.</span> <span class="nav-text">1.通过搭建好的yum源安装服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E9%85%8D%E7%BD%AE%E5%85%83%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%8C%E6%89%A7%E8%A1%8C%E9%A2%84%E5%A4%87%E8%84%9A%E6%9C%AC"><span class="nav-number">4.2.</span> <span class="nav-text">2.配置元数据库，执行预备脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%90%AF%E5%8A%A8cm-server%E8%BF%9B%E7%A8%8B"><span class="nav-number">4.3.</span> <span class="nav-text">3.启动cm server进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E9%85%8D%E7%BD%AE%E6%9C%AC%E5%9C%B0parcel%E5%8C%85"><span class="nav-number">4.4.</span> <span class="nav-text">4.配置本地parcel包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E9%85%8D%E7%BD%AEswappiness%E5%92%8C%E9%80%8F%E6%98%8E%E5%8C%96"><span class="nav-number">4.5.</span> <span class="nav-text">5.配置swappiness和透明化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BF%E9%97%AEWEB-UI%E7%95%8C%E9%9D%A2%E8%BF%9B%E8%A1%8C%E5%AE%89%E8%A3%85%E6%93%8D%E4%BD%9C"><span class="nav-number">5.</span> <span class="nav-text">访问WEB-UI界面进行安装操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%BF%9B%E5%85%A5%E7%95%8C%E9%9D%A2"><span class="nav-number">5.1.</span> <span class="nav-text">1. 进入界面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%82%B9%E5%87%BByes%E5%90%8C%E6%84%8F%EF%BC%8C%E5%86%8D%E7%82%B9%E5%87%BBContinue%E4%B8%8B%E4%B8%80%E6%AD%A5"><span class="nav-number">5.2.</span> <span class="nav-text">2. 点击yes同意，再点击Continue下一步</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E9%80%89%E6%8B%A9Cloudera-Express-Free%E5%85%8D%E8%B4%B9%E7%89%88%E6%9C%AC%EF%BC%8C%E7%84%B6%E5%90%8E%E5%86%8D%E7%82%B9%E5%87%BBContinue%E4%B8%8B%E4%B8%80%E6%AD%A5"><span class="nav-number">5.3.</span> <span class="nav-text">3. 测试环境选择Cloudera Express Free免费版本，然后再点击Continue下一步</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E7%BB%99%E6%88%91%E4%BB%AC%E7%9A%84%E9%9B%86%E7%BE%A4%E5%8F%96%E4%B8%80%E4%B8%AA%E5%90%8D%E5%AD%97"><span class="nav-number">5.4.</span> <span class="nav-text">4. 给我们的集群取一个名字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E5%9C%A8Hostname%E4%B8%AD%E5%A1%AB%E5%85%A5%E4%B8%BB%E6%9C%BA%E5%90%8D%E6%90%9C%E7%B4%A2%EF%BC%8C%E7%84%B6%E5%90%8E%E5%8B%BE%E9%80%89%E6%90%9C%E7%B4%A2%E5%88%B0%E7%9A%84%E7%BB%93%E6%9E%9C%E5%86%8D%E7%82%B9%E5%87%BBContinue%E4%B8%8B%E4%B8%80%E6%AD%A5"><span class="nav-number">5.5.</span> <span class="nav-text">5. 在Hostname中填入主机名搜索，然后勾选搜索到的结果再点击Continue下一步</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E9%85%8D%E7%BD%AE%E6%9C%AC%E5%9C%B0%E4%BB%93%E5%BA%93"><span class="nav-number">5.6.</span> <span class="nav-text">6. 配置本地仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E6%AD%A4%E5%A4%84%E5%8B%BE%E9%80%89%E5%AE%89%E8%A3%85Oracle%E7%9A%84JDK"><span class="nav-number">5.7.</span> <span class="nav-text">7. 此处勾选安装Oracle的JDK</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-%E9%85%8D%E7%BD%AEroot%E7%9A%84%E5%AF%86%E7%A0%81"><span class="nav-number">5.8.</span> <span class="nav-text">8. 配置root的密码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-%E5%BC%80%E5%A7%8B%E7%AD%89%E5%BE%85agents%E7%9A%84%E5%AE%89%E8%A3%85"><span class="nav-number">5.9.</span> <span class="nav-text">9. 开始等待agents的安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-%E6%A3%80%E6%9F%A5%E9%9B%86%E7%BE%A4%E7%8E%AF%E5%A2%83"><span class="nav-number">5.10.</span> <span class="nav-text">10. 检查集群环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-%E4%B8%80%E9%94%AE%E5%AE%89%E8%A3%85%E5%B8%B8%E7%94%A8%E7%BB%84%E4%BB%B6"><span class="nav-number">5.11.</span> <span class="nav-text">11. 一键安装常用组件</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"><a href="https://beian.miit.gov.cn/" target="_blank">粤ICP备17156258号</a></span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">27.6k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
